@@ -1,0 +1,13 @@
+a=1.0+i*0.03 
+
+stitle = sprintf("Unnormalized probability density of a progressive particle-wave\n\
+with energy E = 1, barrier heigth U_0, from 0 < x < %.1f (2m/ħ² = 1)",a)
+
+set title stitle
+
+splot \
+b(x,y,a) w pm3d not, \
+ro(x,y,a) w pm3d not
+
+i=i+1
+if (i<120) reread

@@ -1,0 +1,46 @@
+# definitions
+
+E = 1    # Energia da onda incidente ## nao altere
+k1 = 1   # vetor de onda incidente ## nao altere
+
+# vetor de onda na barreira
+k2(U) = U > E ? sqrt(U-E) : sqrt(E-U)
+
+## Z² - denominador
+Z2(U,a) = U > E ? (2*k2(U) * cosh(k2(U)*a))**2 + ((1-k2(U)**2) * sinh(k2(U)*a))**2 : \
+    ((1 + k2(U)**2) * sin(k2(U)*a))**2 + (2*k2(U) * cos(k2(U)*a))**2
+
+## A
+ReA(U,a) = U > E ? (1 + k2(U)**2) * sinh(k2(U)*a) * (1-k2(U)**2) * sinh(k2(U)*a) / Z2(U,a) : \
+ (1 - k2(U)**2) * sin(k2(U)*a) * (1+k2(U)**2)*sin(k2(U)*a) / Z2(U,a)
+
+ImA(U,a) = U > E ? -2*(1 + k2(U)**2) * k2(U) * (sinh(k2(U)*a) *  cosh(k2(U)*a)) / Z2(U,a) : \
+ -(1 - k2(U)**2) * sin(k2(U)*a) * 2*k2(U)*cos(k2(U)*a) / Z2(U,a)
+
+## A²
+A2(U,a) = U > E ? (1 + k2(U)**2)**2 * sinh(k2(U)*a)**2 / Z2(U,a) : \
+ (1 - k2(U)**2)**2 * sin(k2(U)*a)**2 / Z2(U,a)
+
+## B²
+B2(U,a) = U > E ? (1 + k2(U)**2) * exp(2*k2(U)*a) / Z2(U,a) : \
+ (1 + k2(U))**2 / Z2(U,a)
+
+## C²
+C2(U,a) = U > E ? (1 + k2(U)**2) * exp(-2*k2(U)*a) / Z2(U,a) : \
+ (1 - k2(U))**2 / Z2(U,a)
+
+## D²
+D2(U,a) = 4 * k2(U)**2 / Z2(U,a)
+
+## Probability density x < 0
+PE(x,U,a) = 1 + A2(U,a) + 2*ReA(U,a) * cos(2*x) + 2*ImA(U,a) * sin(2*x)
+
+## Probability density 0 < x < a
+PC(x,U,a) = U > E ? 2*((1 + k2(U)**2) * cosh(2*k2(U)*(x-a)) - (1 - k2(U)**2)) / Z2(U,a) : \
+                   -2*((1 - k2(U)**2) *  cos(2*k2(U)*(x-a)) - (1 + k2(U)**2)) / Z2(U,a)
+
+## Probability density a < x
+PD(U,a) = D2(U,a)
+
+ro(x,U,a) = x < 0 ? PE(x,U,a) : ( x < a ? PC(x,U,a) : PD(U,a) )
+

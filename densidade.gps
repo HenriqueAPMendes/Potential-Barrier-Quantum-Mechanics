@@ -1,0 +1,33 @@
+load "barreira.gps"
+
+set ticslevel 0
+set isosamples 50,50
+
+set view 60,25
+
+set xrange [-4:5]
+set yrange [-2.0:2.0]
+set zrange [0:4]
+set ytics -2,1
+set cbtics 0,1
+set ztics 0,1
+set mytics 2
+set mztics 2
+set grid xtics mxtics ytics mytics ztics mztics
+set xlabel "x axis"
+set ylabel "Barrier height (U_0)" offset 0.7,-0.7 enhanced rotate parallel
+set zlabel "Probability density" offset 2,0 enhanced rotate parallel
+
+set border 127+256+512
+
+b(x,y,l)=(x > 0 && x < l) ? 0 : NaN
+
+set terminal png enhanced truecolor size 800,600 font "times,18"
+
+set term gif enhanced font "times,18" size 800,600 nocrop animate delay 8 loop 0
+
+set output "densidade_animada.gif"
+
+a=1
+i=0
+load "densidade_anima.gps"
